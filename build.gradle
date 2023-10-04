@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.16'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '1.8'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies { // 외부 라이브러리 추가하는 곳 => 자동으로 해당 라이브러리 다운로드 받고 프로젝트에 빌드
+    implementation 'org.springframework.boot:spring-boot-starter-web' // springboot web
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // 인텔리제이 플러그인에서 lombok 플러그인 설치
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
