@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -13,9 +13,25 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="c61603d0-43fe-4824-ba0e-8fd2d4740d3b">
-      <console name="springDB" type="STANDARD" schema="" session="Main"><![CDATA[# SQL 작성하는 공간
+      <console name="springDB" type="STANDARD" schema="springweb" session="Main"><![CDATA[# SQL 작성하는 공간
 # 현재시간 테스트
-select now();]]></console>
+select now();
+select * from todo;
+
+use springweb;
+
+drop table todo;
+
+create table todo(
+                    tno int auto_increment ,
+                    tcontent varchar(100) ,
+                    tstate boolean ,
+                    primary key(tno)
+                    );
+select * from todo;
+
+# DB 상태 최신화
+commit;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
