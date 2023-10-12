@@ -1,0 +1,31 @@
+- 어노테이션
+1. 스프링
+	@SpringBootApplication		스프링부트 실행 관련 제공
+	@ServletComponentScan		서블릿을 찾아서 컨테이너에 빈 등록
+	@Autowired			        컨테이너에서 빈 찾아서 객체 주입
+
+2. MVC
+	@Controller			    해당 클래스를 controller 사용 주입 [ 컨테이너에 빈 등록 ]
+	@RestController			해당 클래스를 controller 사용 주입 [ 컨테이너에 빈 등록 ] + @ResponseBody
+	@ResponseBody			해당 Mapping 함수들의 reponse 반환타입 을 자동으로 설정
+	@RequestMapping			해당 함수/클래스를 매핑
+	@GetMapping			    HTTP 요청 GET 함수 매핑
+	@PostMapping			HTTP 요청 Post 함수 매핑
+	@PutMapping			    HTTP 요청 Put 함수 매핑
+	@DeleteMapping			HTTP 요청 Delete 함수 매핑
+	@Service				해당 클래스를 service 사용 주입 [ 컨테이너에 빈 등록 ]
+	@Component			    해당 클래스 [ 컨테이너에 빈 등록 ]
+		@RequestParam       쿼리스트링 형식의 요청 매개변수 매핑                        URL?매개변수=값?매개변수=값
+		@RequestBody        HTTP body( Post/Put ) 형식의 요청 매개변수를 객체로 매핑
+		- @ModelAttribute     쿼리스트링 형식의 요청 매개변수를 객체로 매핑
+		- @PathVariable       경로상의 매개변수 형식의 요청 매개변수 매핑              URL/값/값
+
+3. lombok
+	@NoArgsConstructor		빈생성자 자동 생성
+	@AllArgsConstructor		풀생성자 자동 생성
+	@Getter				    필드의 getter메소드 자동 생성
+	@Setter				    필드의 setter메소드 자동 생성
+	@ToString			    필드의 toString메소드 자동 생성
+	@Builder				필더 패턴 [ 유연하게(생성자 단점 보완 ) 객체 생성 도와주는 함수 제공 ]
+
+4. JPA

@@ -24,6 +24,7 @@ public class TodoController {
     @PostMapping("")
     public boolean doPost( @RequestBody TodoDto todoDto ) { // 요청 매개변수 : 입력받은 정보들 [Dto]
                             // @RequestBody : HTTP BODY( post , put ) json 형식으로 요청 매핑
+        System.out.println("post 입장");
         System.out.println("TodoController.doPost");
         System.out.println("todoDto = " + todoDto);
         boolean result = todoService.doPost(todoDto);

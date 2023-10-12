@@ -1,0 +1,51 @@
+- 스프링 : 자바 프레임워크
+    -프레임워크 : 여러 기능을 가진 클래스와 라이브러리가 합쳐진 형태/틀
+
+- 스프링 셋팅
+    - 인텔리제이 무료버전(커뮤니티) 스프링프로젝트 지원 안함
+
+    - 수업기준 : 그레이들 프로젝트
+        - 그레이들[ 자동(라이브러리) 빌드 ]
+
+    - 그레이들에 빌드할 의존성(라이브러리) 추가 [ https://start.spring.io/ ]
+        Gradle - Groovy
+        Java
+            Spring Boot[ 2.7.16 ]
+        Java8
+    - Dependencies
+        Spring Web      : 스프링 웹 관련 라이브러리
+        Lombok          : 롬복 [ 생성자,getter,setter,빌더패턴 등등 ] 라이브러리
+        MySQL Driver    : mysql 연동 라이브러리
+        <추후에 계속적으로 추가>
+
+    - build.gradle 에 Dependencies 추가
+
+- 프로젝트 폴더구성
+    프로젝트명
+        .gradle : build.gradle 빌드 파일 [ 임시파일 ]
+        .idea   : 인텔리제이 셋팅 파일 [ 임시파일 ]
+        build  : JVM 빌드시 생성한 바이트파일 [ 임시파일 ]
+        gradle : gradle 라이브러리 파일
+        ****src : 개발자 코드 작성하는 공간
+            main
+                java		: 백엔드
+
+                resources		: 프론트엔드[정적파일(html,css,js,img 등등)]
+                    - static
+                        css/js/img 등등
+                    - templates
+                        html
+                    **** - application.properties : 현재 프로젝트 설정 소스 파일
+                        1. 서버포트 변경 : server.port = 사용할포트번호
+                        2. JPA 셋팅
+
+               ****build.gradle : 라이브러리 자동 빌드 해주는 작성 코드 파일
+
+- 스프링부트 실행
+	준비물
+	-main함수 1개 필요 [ 스프링을 작동할 스레드 1개 필요 ]
+	1. 클래스 1개 생성 [ 스프링 실행하는 클래스 이므로 모든 소스파일의 최상위 위치 ]
+	2. 클래스 상단
+		@SpringBootApplication 주입
+	3. main 선언
+		SpringApplication.run( 현재클래스명.class );

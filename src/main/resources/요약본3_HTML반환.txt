@@ -1,0 +1,9 @@
+- HTTP 매핑시 HTML 반환
+    Resource 클래스 사용
+    반환예시 : return new ClassPathResource("templates/todo.html");
+    * 경로는 resources 이하부터 넣어주시면 됩니다.
+        프론트엔드[정적파일(html,css,js,img 등등)]
+            - static
+                css/js/img 등등
+             - templates
+                html

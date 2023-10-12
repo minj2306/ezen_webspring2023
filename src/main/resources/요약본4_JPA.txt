@@ -1,0 +1,90 @@
+-----
+    패러다임(=방식/체계/규정 틀)
+    ORM( = Object Relational Mapping ) : 객체 관계 매핑
+        - 객체 지향 프로그래밍   : 객체들간의 상호작용을 통한 프로그래램
+        - 관계형 데이터베이스    : 열/행의 테이블/관계로 데이터를 저장하는 방식
+        + 관계형 데이터베이스를 객체지향으로 매핑 사용
+
+    JPA : JAVA Persistence api : ORM 패러다임으로 만들어진 라이브러리
+
+    엔티티클래스 = 테이블
+    엔티티(객체) = 레코드
+
+    ------
+
+    MYSQL          < ------------------------ ORM 매핑/연결 ------------> JPA(ORM)
+    테이블 TODO                                                          @Entitiy
+        create table todo(                                              class todo (
+            tno int auto_increment primary key ,                              private int tno;
+            tcontent varchar(100) ,                                           private String tno;
+            tstate boolean                                                    private boolean tstate;
+        );                                                              )
+
+
+-----
+1. 그레이들에 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    - 스프링 실행시 DB연동
+    - 경로 오류 [ 1. 경로 셋팅 안함 2. 경로에 오타 등 ]
+        Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+2. JPA 옵션 셋팅
+    * application.properties 에서 코드 작성
+    ---- 연동에 필요한 필수 코드
+    # spring.datasource.driverClassName = DBMS 드라이버 이름[각 회사마다 상이]
+    # spring.datasource.url = 연동할 데이터베이스 URL경로
+    # spring.datasource.username =계정명
+    # spring.datasource.username =DB계정 패스워드
+    -----
+    spring.jpa.hibernate.ddl-auto = DDL자동실행.
+        create : 만약에 매핑된 엔티티가 실제 DB에 없으면/있어도 (서버 실행할마다) 새로운 테이블 생성
+        update :
+            만약에 매핑된 엔티티가 실제 DB에 없으면 새로운 테이블 생성
+            만약에 매핑된 엔티티가 실제 DB에 있으면 테이블의 변경이 있을때만 테이블 수정
+
+3. 엔티티(객체)
+    1. 엔티티 생성시 필수
+            1. @Entity
+            2. @Id
+    2. 필드 선언 [ MYSQL 과 JAVA 타입 변환 ]
+
+4. 엔티티 조작 [ 인터페이스  ]
+    - JPARepository
+        * 기본적인 CRUD 해당하는 SQL 지원
+        * 선언 방법
+            1. 인터페이스 생성
+            2. @Repository 주입
+            3. public interface 인터페이스명 extends JpaRepository< 조작할엔티티클래스명 , 해당엔티티PK필드자료형  >
+                - 조작할때 PK필드로 식별 하므로 각 엔티티별 PK필드(@Id)는 필수
+
+5. 엔티티 인터페이스 사용처 [ 서비스에서만 사용(각 MVC별 역할분담) ]
+    1. CRUD
+        1. insert
+            인터페이스명.save( 저장할엔티티 )
+            반환타입 : 생성된 엔티티 반환
+        2. select
+            1.
+            인터페이스명.findAll()
+            반환타입 : 검색된 엔티티 여러개 List<Entity>
+
+            2.
+            인터페이스명.findById( pk번호 )
+            반환타입 : 검색된 엔티티 1개 Optional<TodoEntity>
+                Optional 클래스 : null 관련 메소드 제공 [ nullPointerException 안전성 보장 ]
+                - nullPointerException : 객체가 null 일때 발생하는 오류
+                1. .isPresent()
+                    Optional객체를 사용하기전에 null 인지 아닌지 체크하고 사용
+                2. .get() :
+                    Optional객체내 실제 객체(엔티티) 를 꺼내기
+
+        3. delete
+            1.
+            인터페이스명.delete( 삭제할엔티티객체 )
+            반환타입 : void
+            2.
+            인터페이스명.deleteById( 삭제할pk번호 )
+            반환타입 : void
+
+        4. update
+            엔티티객체명.set필드명( 새로운값 )
+            @Transactional 필수.

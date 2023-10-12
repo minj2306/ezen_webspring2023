@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/phoneBook.css" rel="stylesheet">
+
+</head>
+<body>
+
+    <div class="phonewrap">
+    <h1> 전화번호부 </h1>
+        <div class="phone_top"><!--쓰기구역-->
+            이름<input class="pname" type="text" placeholder="이름을 입력해주세요">
+            전화번호<input class="pnumber" type="text" placeholder="전화번호 '-' 포함 13자리">
+            <button class="writeBtn" onclick="onWrite()" type="button"> 등록</button>
+        </div>
+        <div class="phoneConBox">
+
+        </div>
+
+    </div>
+
+
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="/phoneBook.js"></script>
+</body>
+</html>
