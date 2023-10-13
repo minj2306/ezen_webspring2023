@@ -5,6 +5,7 @@ console.log('todo.js open');
 // 1. POST
 function onWrite() {
 
+
     let tcontent = document.querySelector('.tcontent').value;
     let tstate = false;
     console.log(tcontent);
