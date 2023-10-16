@@ -19,6 +19,7 @@
 		@RequestBody        HTTP body( Post/Put ) 형식의 요청 매개변수를 객체로 매핑
 		- @ModelAttribute     쿼리스트링 형식의 요청 매개변수를 객체로 매핑
 		- @PathVariable       경로상의 매개변수 형식의 요청 매개변수 매핑              URL/값/값
+    @Repository             Spring 에서 리포지토리를 지정하기 위한 어노테이션 [ Spring 컨테이너에 빈 등록 ]
 
 3. lombok
 	@NoArgsConstructor		빈생성자 자동 생성
@@ -29,3 +30,24 @@
 	@Builder				필더 패턴 [ 유연하게(생성자 단점 보완 ) 객체 생성 도와주는 함수 제공 ]
 
 4. JPA
+    1. entity
+        @Entitiy                        해당 클래스를 데이터베이스의 테이블과 매핑
+        @Table( name = "테이블명" )      데이터 베이스의 이름 정의
+        @ID                             해당 필드를 pk로 선정
+        @GeneratedValue( strategy = GenerationType.IDENTITY ) : PK 정의할 방법 : auto_increment
+        @Column( name = "필드명" , length = "최대 문자수" , nullable = false )
+            name = " "              : 생략시 자바 필드명으로 자동 생성
+            length = "최대문자수"    : 필드 내 최대길이 수 ( String 기본값 255 )
+            nullable = false        : not null ( 기본값이 true )
+            unique = true           : unique( 기본값이 false )
+
+    2. Repository
+        @Repository
+        @Transactinal
+
+    3. JPA Auditing
+        @EnableJpaAuditing
+        @EntityListners( AuditingEntityListner.class )
+        @MappedSuperclass
+        @CreateDate
+        @LastModifiedDate
