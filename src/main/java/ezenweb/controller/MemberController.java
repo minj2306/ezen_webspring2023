@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
-@RestController
+// IOC(Inversion Of Controller) : 제어역전 ( 객체관리를 Spring 에게 위임 ) => 왜?? 개발자가 편하려고 / 협업하려고( 객체 공유햇거 쓸려고 = 서로 다른 객체 사용했을떄 문제발생=싱글톤
+// DI( Depwndenct injection ) : 의존성 주입 [ 스프링이 객체를 관리하니까.. 스프링에게 객체를 의존(부탁) 해서 주입(가져오기) ]
+@RestController // 컨트롤러 (@Cmomponent 포함= 스프링 컨테이너(스프링 관리하는 메몰리 공간) 빈(겍체) 등록 ) + ResponseBody
 @RequestMapping("/member")
 public class MemberController {
 
@@ -64,7 +66,22 @@ public class MemberController {
         return result;
     }
 
+    // 5. 로그인
     @PostMapping("/login")
+    public boolean login( @RequestBody MemberDto memberDto ){
+        boolean result = memberService.login( memberDto );
+        return result;
+    }
+
+    // 6. 로그아웃
+    @GetMapping
+    public boolean logout( ){
+        boolean result = memberService.logout( );
+        return result;
+    }
+
+    //내가 한거
+   /* @PostMapping("/login")
     public boolean login(@RequestBody MemberDto memberDto ){
 
         boolean result = memberService.login(memberDto);
@@ -80,7 +97,7 @@ public class MemberController {
 
         return result;
 
-    }
+    }*/
 
 
 

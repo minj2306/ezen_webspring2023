@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,8 +20,7 @@ public class MemberService {
     // Controller <- Service <- Repository
     @Autowired
     private MemberEntityRepository memberEntityRepository;
-    @Autowired
-    private HttpSession session;
+
 
     // [C] 회원가입
     @Transactional // 트랜젝션 : 여러개 SQL을 하나의 최소 단위[ 성공,실패 ]
@@ -131,6 +132,42 @@ public class MemberService {
         return null;
     }
 
+
+    //로그인 안했고 상태 저장하는곳 => request 객체도 스프링 컨테이너 등록
+    @Autowired
+    private HttpServletRequest request;
+
+    @Transactional
+    public boolean login( MemberDto memberDto ) {
+
+        // 1. 입력받은 데이터 [아이디 , 패스워드 ] 검증하기
+        List<MemberEntity> memberEntites = memberEntityRepository.findAll();
+            //2. 동일한 아이디 / 비밀번호 찾기
+            for ( int i = 0; i < memberEntites.size(); i++) {
+                MemberEntity m = memberEntites.get(i);
+                // 3. 동일한 데이터 찾았다
+                if(m.getMemail().equals( memberDto.getMemail() ) &&
+                                    m.getMpassword().equals( memberDto.getMpassword())){
+                    // 4. 세션 부여         // 세션 저장
+                    request.getSession().setAttribute("loginDto", m.toDto());
+                    return true;
+                }
+            }
+        return false;
+    }
+
+    // 6.
+    public boolean logout(){
+        request.getSession().setAttribute("loginDto", null);
+        return true;
+    }
+
+
+    // 내가 한거
+    /*
+    @Autowired
+    private HttpSession session;
+
     public boolean login( MemberDto memberDto ) {
 
         Optional<MemberEntity> optional =
@@ -171,7 +208,7 @@ public class MemberService {
             return false;
         }
 
-    }
+    }*/
 
 
 
