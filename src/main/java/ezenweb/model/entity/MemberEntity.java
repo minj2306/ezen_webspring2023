@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,6 +37,11 @@ public class MemberEntity extends BaseTime {
     @Column
     @ColumnDefault( "'user'" ) // @ColumnDefault("기본값") @ColumnDefault("'문자일경우'")
     private String mrole; // 회원등급 ( 일반회원 =  "user" , 관리자 회원 =  "admin" )
+
+    @Builder.Default // 빌더패턴 사용시 해당 필드를 값을 기본값으로 사용
+    @OneToMany( mappedBy = "memberEntity") // 하나가 다수일 때 [ PK ] // 실제 DB 영향 X
+    private List<BoardEntity> boardEntityList = new ArrayList<>();
+
 
     // entity --> dto 반환 함수
         // service 에서 entity 정보를 controller 로 이동하기 위해
