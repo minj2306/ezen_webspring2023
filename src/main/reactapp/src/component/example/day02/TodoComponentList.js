@@ -17,7 +17,7 @@ export default function TodoList(props) {
                 <button type="button"> 등록</button>
             </div>
             <div className="todo_bottom">
-                <div className="todo">
+
                     {
                     response.map( (r)=>{
                         return(
@@ -25,7 +25,7 @@ export default function TodoList(props) {
                         )
                     })
                     }
-                </div>
+
             </div>
         </div>
       </>)

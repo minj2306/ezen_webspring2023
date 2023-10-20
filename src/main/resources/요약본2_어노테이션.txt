@@ -33,11 +33,11 @@
 
 4. JPA
     1. entity
-        @Entity
-        @Table( name = "테이블명")
-        @Id
-        @GeneratedValue( strategy = GenerationType.IDENTITY )
-        @Column( name="필드명" , length = "최대문자수" , nullable = false)
+        @Entity                     해당 클래스가 엔티티임을 주입 [ 실제 테이블 매핑/연결 ]
+        @Table( name = "테이블명")    테이블 명 설정
+        @Id                         pk로 선정할 필드
+        @GeneratedValue( strategy = GenerationType.IDENTITY )       auto-increment
+        @Column( name="필드명" , length = "최대문자수" , nullable = false)      생략 가능 [ 필드 속성을 커스텀 하기 위해서 작성 ]
             name = ""
             length = "최대문자수"
             nullable = false
@@ -51,12 +51,12 @@
                 longtext                  @Column( columnDefinition = "longtext" )
 
     2. Repository
-        @Repository
-        @Transactional
+        @Repository         Spring에서 리포지토리를 지정하기 위한 어노테이션 [ spring 컨테이너에 빈 등록 ]
+        @Transactional      해당 주입된 함수 내에서 사용중인 SQL를 트랜젝션 단위로 적용
 
     3. Jpa Auditing
-        @EnableJpaAuditing
-        @EntityListeners( AuditingEntityListener.class )
-        @MappedSuperclass
-        @CreatedDate
-        @LastModifiedDate
+        @EnableJpaAuditing      Spring data JPA Auditing 을 이용한 엔티티 감지  ( @SpringBootApplication 어노테이션 같은 위치에서 선언 )
+        @EntityListeners( AuditingEntityListener.class  감지 이벤트 실행 )         해당 클래스에서 엔티티 감지기능
+        @MappedSuperclass       JPA 엔티티 클래스들의 공통 필드 상속할때 사용하는 어노테이션[ 부모클래스의 매핑 정보를 자식클래스에게 제공 ]
+        @CreatedDate            엔티티가 생성될때 시간이 자동 저장/주입
+        @LastModifiedDate       엔티티가 변경될때 시간이 자동 저장/주입
