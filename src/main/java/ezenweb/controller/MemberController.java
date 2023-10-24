@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 // DI( Depwndenct injection ) : 의존성 주입 [ 스프링이 객체를 관리하니까.. 스프링에게 객체를 의존(부탁) 해서 주입(가져오기) ]
 @RestController // 컨트롤러 (@Cmomponent 포함= 스프링 컨테이너(스프링 관리하는 메몰리 공간) 빈(겍체) 등록 ) + ResponseBody
 @RequestMapping("/member")
+@CrossOrigin("http://localhost:3000") // 교차 리스트 공유(
 public class MemberController {
 
     // Controller -> Service 요청
@@ -74,7 +75,7 @@ public class MemberController {
     }
 
     // 6. 로그아웃
-    @GetMapping
+    @GetMapping("/logout")
     public boolean logout( ){
         boolean result = memberService.logout( );
         return result;
