@@ -1,30 +1,38 @@
 /*
-
-    - HTTP 기반의 비동기 통신 함수
-    Axios(React 라이브러리) <------->AJAX ( jquery 라이브러리 )
+    - HTTP 기반의 비통기 통신 함수
+    Axios( React 라이브러리 )  < ----- >   AJAX( jquery라이브러리)
         1. 설치
-            1. 터미널[alt+f12]
-            2. 리엑트 프로젝트 폴더 내 설치( cd src/main/reactapp )
-            3. 키보드 위/아래 화살표 입력시 기존코드 표시
-
+            1. 터미널 [ alt+f12 ]
+            2. 리액트 프로젝트 폴더내 설치 [ cd src/main/reactapp ]
+                - 키보드 위/아래 화살표 입력시 기존 코드 표시
+            3. npm i axios
 
         2. 특징
             1. contentType : JSON
 
         2. 컴포넌트에서 axios 사용하기
             1. import
-                파일 상단에 import axios from 'axios'
-
+                파일 상단에 import axios from 'axios';
+            2. ajax vs axios
+                       $.ajax({  url : '' ,  method:  , data :  , success :  , })
+                        vs
+                        axios.methodType( url ).then( 반환매개변수 => { } )
             3.
-                - JSON 객체를 HTTP BODY 형식으로 보낼때
                 axios
-                    .metodType( url , { params : { JSON객체 } } )
+                    .methodType( url ,  data , headerOption  )
+                    .then( 반환매개변수 => { } )
+                    .catch( 오류매개변수=> { } )
+
+                - JSON객체를 HTTP BODY 형식으로 보낼때.
+                axios
+                    .methodType( url ,  JSON객체  )
                     .then( 반환매개변수 => { } )
 
-                - JSON 객체를 쿼리스트링 형식으로 보낼때
+                - JSON객체를 쿼리스트링 형식 보낼때.
                 axios
-                    .metodType( url , { params : { params : JSON객체 } } )
+                    .methodType( url , { params : JSON객체  } )
                     .then( 반환매개변수 => { } )
+
 
 */
 import axios from 'axios'
