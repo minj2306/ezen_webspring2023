@@ -21,6 +21,8 @@ public class MemberService {
     @Autowired
     private MemberEntityRepository memberEntityRepository;
 
+    @Autowired
+    private HttpServletRequest request;
 
     // [C] 회원가입
     @Transactional // 트랜젝션 : 여러개 SQL을 하나의 최소 단위[ 성공,실패 ]
@@ -39,7 +41,7 @@ public class MemberService {
 
 
     // [R]  회원정보 호출
-    @Transactional
+   /* @Transactional
     public MemberDto getMember( int mno){
         
         // 1. mno[회원번호pk] 를 이용한 회원 엔티티 찾기
@@ -54,6 +56,18 @@ public class MemberService {
             return memberEntity.toDto();
         }
         System.out.println("mno = " + mno);
+        return null;
+    }*/
+
+    // 2.  R 회원정보 호출 [1명] 세션 썼을때
+    @Transactional
+    public MemberDto getMember ( ){
+        // 1. 세션 호출
+        Object session = request.getSession().getAttribute("mno");
+        // 2. 세션 검증
+        if(session != null){
+            return (MemberDto) session;
+        }
         return null;
     }
 
@@ -134,8 +148,7 @@ public class MemberService {
 
 
     //로그인 안했고 상태 저장하는곳 => request 객체도 스프링 컨테이너 등록
-    @Autowired
-    private HttpServletRequest request;
+
 
     @Transactional
     public boolean login( MemberDto memberDto ) {
@@ -149,7 +162,7 @@ public class MemberService {
                 if(m.getMemail().equals( memberDto.getMemail() ) &&
                                     m.getMpassword().equals( memberDto.getMpassword())){
                     // 4. 세션 부여         // 세션 저장
-                    request.getSession().setAttribute("loginDto", m.toDto());
+                    request.getSession().setAttribute("mno", m.toDto());
                     return true;
                 }
             }
@@ -158,10 +171,21 @@ public class MemberService {
 
     // 6.
     public boolean logout(){
-        request.getSession().setAttribute("loginDto", null);
+        request.getSession().setAttribute("mno", null);
         return true;
     }
 
+    // 7.
+
+        public boolean getFindMemail( String memail ){
+
+        // 1. 이메일을 이용한 엔티티 찾기
+        boolean result = memberEntityRepository.existsByMemail(memail);
+        if(result){
+            return true;
+        }
+        return false;
+    }
 
     // 내가 한거
     /*

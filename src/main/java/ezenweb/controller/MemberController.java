@@ -30,12 +30,19 @@ public class MemberController {
 
 
     // [R]  회원정보 호출
-    @GetMapping("/get")
+    /*@GetMapping("/get")
     public MemberDto getMember( @RequestParam int mno){
 
         MemberDto memberDto = memberService.getMember(mno);
         return memberDto;
+    }*/
+
+    // 2. 회원정보호출 세션 구현했을때
+    @GetMapping("/get")
+    public MemberDto getMember (){
+        return  memberService.getMember();
     }
+
 
     // [U]  회원정보 수정
     @PutMapping("/put")
@@ -78,6 +85,15 @@ public class MemberController {
     @GetMapping("/logout")
     public boolean logout( ){
         boolean result = memberService.logout( );
+        return result;
+    }
+
+    // 7.
+    @GetMapping("/findMemail")
+    public boolean getFindMemail(
+            @RequestParam String memail ){
+        System.out.println("memail = " + memail);
+        boolean result = memberService.getFindMemail(memail);
         return result;
     }
 
