@@ -14,6 +14,7 @@ import TodoList from './example/day02/TodoComponentList'
 import 과제1 from './example/day01/과제1_도서목록'
 import Login from './member/Login';
 import Signup from './member/Signup';
+import Info from './member/Info';
 
 import 컴포넌트1 from './example/day01/1_컴포넌트'
 import 컴포넌트2 from './example/day01/2_컴포넌트'
@@ -51,6 +52,8 @@ export default function Index( props ){
                     {/*MEMBER*/}
                     <Route path='/signup' element ={ <Signup/> }/>
                     <Route path='/login' element ={ <Login/> }/>
+                    <Route path='/info' element ={ <Info/> }/>
+
 
                 </Routes>
                 <Footer />

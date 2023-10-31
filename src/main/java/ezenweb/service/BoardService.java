@@ -26,7 +26,7 @@ public class BoardService {
 
         // 1. dto -> entity 변환후 저장된 엔티티 반환
         BoardEntity boardEntity =
-                     boardEntityRepository.save( boardDto.saveToEntity() );
+                     boardEntityRepository.save( boardDto .saveToEntity() );
 
         if( boardEntity.getBno() >= 1 ){
             return true;

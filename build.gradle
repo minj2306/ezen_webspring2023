@@ -22,9 +22,7 @@ dependencies { // 외부 라이브러리 추가하는 곳 => 자동으로 해당
     annotationProcessor 'org.projectlombok:lombok' // lombok 라이브러리
     // 추가로 인텔리제이 플러그인에서 lombok 플러그인 설치
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-
-
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 
 tasks.named('test') {

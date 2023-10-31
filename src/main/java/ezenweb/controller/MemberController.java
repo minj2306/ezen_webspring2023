@@ -74,7 +74,7 @@ public class MemberController {
         return result;
     }
 
-    // 5. 로그인
+    /*// 5. 로그인
     @PostMapping("/login")
     public boolean login( @RequestBody MemberDto memberDto ){
         boolean result = memberService.login( memberDto );
@@ -86,7 +86,7 @@ public class MemberController {
     public boolean logout( ){
         boolean result = memberService.logout( );
         return result;
-    }
+    }*/
 
     // 7.
     @GetMapping("/findMemail")

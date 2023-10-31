@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styles from '../css/header.css'
 import axios from 'axios';
-import { useState } from'react';
+import { useState , useEffect } from'react';
 
 export default function Header( props ){
 
@@ -21,6 +21,7 @@ export default function Header( props ){
                     //window.location.reload(); // 새로고침
                     // vs
                     //this.forceUpdate(); // 강제 리렌더링
+                    sessionStorage.removeItem('login_token');
                     setLogin(null);
                 }
                 else{ // 로그아웃 실패했으면
@@ -31,12 +32,27 @@ export default function Header( props ){
 
 
     // - 회원정보 호출 [ 로그인 여부 확인 ]
-    axios.get('/member/get')
-         .then( r => { console.log(r.data);
-            if(r.data != ''){ // 만약 로그인이 되어있으면
-                setLogin(r.data);
-            }
-          })
+    //---------------컴포넌트 생성 될 떄 1번----------------
+    useEffect(() =>{
+        axios
+            .get('/member/get')
+            .then( r => {
+                console.log(r.data);
+                if(r.data != ''){ // 만약 로그인이 되어있으면
+                // 브라우저 세션/쿠키 / 브라우저 f12 -> 에플리케이션 탭 -> LocalStorage / SessionStorage
+                    // localstorage
+                    // 모든 브라우저 탭 / 창 공유 , 브라우저가 꺼져도 유지 , 자동로그인 기능 , 로그인 상태 유지
+                    // vs
+                    // sessionstorage
+                    // 페이지 전환해도 유지 , 탭 / 창 종료되면 사라짐 , 로그인 여
+                    // 세션/쿠키 저장 : .setItem( key , value )
+                    // 세션/쿠키 호출 : .getItem( key )
+                    sessionStorage.setItem('login_token', JSON.stringify( r.data ));
+                    setLogin( JSON.parse( sessionStorage.getItem('login_token') ));
+                }
+            })
+    } , [] )
+
 
     return(<>
         <header>
@@ -55,7 +71,7 @@ export default function Header( props ){
                     </>)
                     : (<>
                         <li>{login.memail}님</li>
-                        <li><Link to=''>내정보</Link></li>
+                        <li><a href='/info'>내정보</a></li>
                         <li><div onClick={ logout }>로그아웃</div></li>
                     </>)
                 }

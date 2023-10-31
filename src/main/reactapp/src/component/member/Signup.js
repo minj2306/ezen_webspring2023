@@ -17,7 +17,7 @@ export default function Signup( props ){
 
        // 3. 통신
        axios
-            .post( 'http://localhost:8080/member/post' , info )
+            .post( '/member/post' , info )
             .then( r => {
                 if(r.data == true){
                     alert('회원가입 성공')

@@ -21,7 +21,7 @@ public interface MemberEntityRepository extends JpaRepository<MemberEntity, Inte
     //MemberEntity findByMemail( String memail );
 
         // 2. 동일한 이메일 있을때 Optional 반환 없을때 Optional 반환
-    //Optional <MemberEntity> findByMemail( String memail );
+    MemberEntity findByMemail( String memail );
 
         // 3. 동일한 이메일 있을떄 TRUE 없을때 FALSE 반환
     boolean existsByMemail( String memail );
