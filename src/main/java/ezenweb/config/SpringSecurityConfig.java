@@ -1,5 +1,6 @@
 package ezenweb.config;
 
+import ezenweb.controller.AuthLoginController;
 import ezenweb.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         // 2. 커스텀 할 메소드 오버라이딩 하기
             // 1. super.configure(http)
 
+    @Autowired
+    private MemberService memberService;
+
+    @Autowired
+    private AuthLoginController authLoginController;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //super.configure(http);
@@ -34,11 +41,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/member/login") // 3. 시큐리티 로그인(인증) 처리 요청시 사용할 HTTP 주소
                 // 시큐리티 사용하기 전에 MemberController 에서 정의한 로그인/로그아웃 함수 없애기
                 // HTTP '/member/login' POST 요청시 ---> MemberService 의 loadByUsername 로 이동
-                .defaultSuccessUrl("/")  // 4. 만약에 로그인 성공시 이동할 http 주소 
-                .failureUrl("/login") // 5. 만약에 로그인 실패시 이동할 HTTP 주소
+                //.defaultSuccessUrl("/")  // 4. 만약에 로그인 성공시 이동할 http 주소 
+                //.failureUrl("/login") // 5. 만약에 로그인 실패시 이동할 HTTP 주소
                 .usernameParameter("memail") // 6. 로그인시 입력받은 아이디의 변수명 정의
-                .passwordParameter("mpassword"); // 7. 로그인시 입력받은 비밀번호의 변수명 정의
-
+                .passwordParameter("mpassword") // 7. 로그인시 입력받은 비밀번호의 변수명 정의
+                .successHandler( authLoginController ) // 로그인 성공했을때 해당 클래스 매핑
+                        .failureHandler( authLoginController ); // 로그인 실패 했을때 해당 클래스 매핑
         // 2. 로그아웃 커스텀 [ 시큐리티 사용정에 Controller , Service 에 구현한 logout 관련 메소드 제거 ]
         http.logout()       // 1. 로그인(인증) 로그아웃 처리
                 .logoutRequestMatcher( new AntPathRequestMatcher("/member/logout") ) // 2. 로그아웃 처리할 HTTP 주소 정의
@@ -49,12 +57,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable(); // 모든 http 에서 csrf 사용안함
         // 특정 http 에서만 csrf 사용 안함[ POST , PUT ]
         //http.csrf().ignoringAntMatchers("/member/post"); // controller 매핑 주소
+
+        // 4. Oauth2 커스텀
+        http.oauth2Login()
+                .loginPage("/login") // oauth2 로그인할 view 페이지
+                .userInfoEndpoint().userService(memberService); // <로그인 성공한> oauth2 유저 정보를 받을 서비스 선택
     }
 
     // p. 689 :configure(WebSecurity web) : 웹 시큐리티 보안 담당하는 메소드
-
-    @Autowired
-    private MemberService memberService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

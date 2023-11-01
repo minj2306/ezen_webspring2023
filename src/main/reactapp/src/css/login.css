@@ -27,3 +27,14 @@
     margin : 10px 0px;
     border : none;
 }
+
+.kakaoBtn{
+    width:100%;
+    height: 31px;
+    background-color:#FEE500;
+    color:black;
+    padding: 5px 0px;
+    font-size:20px;
+    margin : 10px 0px;
+    border : none;
+}
