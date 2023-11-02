@@ -1,8 +1,11 @@
 package ezenweb.service;
 
 import ezenweb.model.dto.BoardDto;
+import ezenweb.model.dto.MemberDto;
 import ezenweb.model.entity.BoardEntity;
+import ezenweb.model.entity.MemberEntity;
 import ezenweb.model.repository.BoardEntityRepository;
+import ezenweb.model.repository.MemberEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,13 +24,39 @@ public class BoardService {
     @Autowired
     private BoardEntityRepository boardEntityRepository;
 
+    @Autowired
+    private MemberService memberService;
+
+    @Autowired
+    private MemberEntityRepository memberEntityRepository;
+
     @Transactional //함수내 여럿 SQL을 하나의 일처리 단위로 처리
     public boolean write( BoardDto boardDto ){
 
-        // 1. dto -> entity 변환후 저장된 엔티티 반환
+        // 2. pk 번호를 가지고 pk 엔티티 찾기
+        //--------------------단방향-------------------------------
+
+        MemberDto loginDto = memberService.getMember();
+        if( loginDto==null){ return false; }
+
+        Optional<MemberEntity> memberEntityOptional =
+                memberEntityRepository.findById( memberService.getMember().getMno() );
+
+        // 3. 유효성 검사 [ 로그인이 안된 상태 - 글쓰기 실패 ]
+        if( !memberEntityOptional.isPresent() ){ return false; }
+        // 4. 단방향 저장
+            // 1. 게시물 생성
+        // 게시물 앤티티 등록
         BoardEntity boardEntity =
                      boardEntityRepository.save( boardDto .saveToEntity() );
+            // 2. 생성된 게시물에 작성자 엔티티 넣어주기
+        boardEntity.setMemberEntity( memberEntityOptional.get() );
+        //-----------------------------------------------------------------
+        //-----------------양방향--------------------------------------
+        // 5. 양방향 저장
+        memberEntityOptional.get().getBoardEntityList().add( boardEntity);
 
+        //----------------------------------------------------------
         if( boardEntity.getBno() >= 1 ){
             return true;
         }

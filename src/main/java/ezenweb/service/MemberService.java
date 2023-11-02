@@ -74,8 +74,14 @@ public class MemberService
         if( o.equals("anonymousUser") ) {return null;} // 로그인 안했어
         // 2. 인증결과에 저장된 UserDetails 로 타입 변환
         UserDetails userDetails = (UserDetails) o;
+            // 로그인 상태에 필요한 데이터 구성
+        MemberEntity memberEntity = memberEntityRepository.findByMemail(userDetails.getUsername() );
+
         // 3. UserDetails에 정보를 memberDto 에 담아서 반환
-        return MemberDto.builder().memail( userDetails.getUsername() ).build();
+        return MemberDto.builder()
+                .memail(memberEntity.getMemail() )
+                .mno( memberEntity.getMno() )
+                .build();
     }
 
     // 8

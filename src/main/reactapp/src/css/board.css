@@ -1,0 +1,4 @@
+.boardWriteWrap{
+    display: flex;
+    flex-direction: column;
+}
