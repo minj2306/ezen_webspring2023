@@ -42,4 +42,10 @@ public class BoardController {
 
         return boardService.delete( bno );
     }
+
+    @GetMapping("/doGet")
+    public BoardDto doGet( @RequestParam int bno ){
+
+        return boardService.doGet( bno );
+    }
 }

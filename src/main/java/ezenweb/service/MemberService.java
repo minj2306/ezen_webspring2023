@@ -4,6 +4,8 @@ import ezenweb.model.dto.MemberDto;
 import ezenweb.model.entity.MemberEntity;
 import ezenweb.model.repository.MemberEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,8 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MemberService
@@ -38,7 +39,124 @@ public class MemberService
         OAuth2User oAuth2User = new DefaultOAuth2UserService().loadUser( userRequest);
         System.out.println( "oAuth2User : " + oAuth2User );
 
-        return null;
+        // 2. 인증결과( 카카오 , 네이버 , 구글 )
+        // 2-1 인증한 소셜 서비스 아이디( 각 회사명 ) 찾기
+        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        System.out.println( "registrationId : " + registrationId );
+
+        String memail = null; String mname = null;
+
+        // 2-2 카카오 이면
+        if( registrationId.equals("kakao") ) {
+            // System.out.println( oAuth2User.getAttribute( "Name" ).toString() );
+            System.out.println(oAuth2User.getAttributes());
+            System.out.println(oAuth2User.getAuthorities());
+            // oAuth2User :
+            // Name: [3142925581],
+            // Granted Authorities: [[ROLE_USER, SCOPE_account_email, SCOPE_profile_nickname]],
+            // User Attributes:
+            // [{id=3142925581,
+            // connected_at=2023-11-01T04:23:56Z,
+            // properties={nickname=박민재},
+            // kakao_account={profile_nickname_needs_agreement=false,
+            // profile={nickname=박민재},
+            // has_email=true,
+            // email_needs_agreement=false,
+            // is_email_valid=true,
+            // is_email_verified=true,
+            // email=alswo2035@nate.com}}]
+
+            Map<String, Object> kakao_account = (Map<String, Object>) oAuth2User.getAttributes().get("kakao_account");
+            Map<String, Object> profile = (Map<String, Object>) kakao_account.get("profile");
+
+            mname = profile.get("nickname").toString();
+            memail = kakao_account.get("email").toString();
+
+            System.out.println(memail);
+            System.out.println(mname);
+        }
+        // 2-3 네이버 이면
+        if( registrationId.equals("naver") ){
+
+            Map<String, Object> response =(Map<String, Object>) oAuth2User.getAttributes().get("response");
+            memail = response.get("email").toString();
+            mname = response.get("nickname").toString();
+
+            // oAuth2User :
+            // Name: [{
+            // id=oysXr71F_RfrB0fQMacz7QWlTQBc0Kt8QjEJf8XHNfc,
+            // nickname=쿄쿄,
+            // email=alswo2035@naver.com}],
+            // Granted Authorities: [[ROLE_USER]],
+            // User Attributes: [{
+            // resultcode=00,
+            // message=success,
+            // response={
+            // id=oysXr71F_RfrB0fQMacz7QWlTQBc0Kt8QjEJf8XHNfc,
+            // nickname=쿄쿄,
+            // email=alswo2035@naver.com}}]
+
+        }
+        // 2-4 구글 이면
+        if( registrationId.equals("google") ){
+
+            memail = oAuth2User.getAttributes().get("email").toString();
+            mname = oAuth2User.getAttributes().get("name").toString();
+
+            //  oAuth2User :
+            //  Name: [102387944045289652696],
+            //  Granted Authorities: [[
+            //  ROLE_USER,
+            //  SCOPE_https://www.googleapis.com/auth/userinfo.email,
+            //  SCOPE_https://www.googleapis.com/auth/userinfo.profile,
+            //  SCOPE_openid]],
+            //  User Attributes: [{
+            //  sub=102387944045289652696,
+            //  name=박민재,
+            //  given_name=민재,
+            //  family_name=박,
+            //  picture=https://lh3.googleusercontent.com/a/ACg8ocLXdJRClvtSVh0IRpsYR67hVn1_Ci9wxAfNjOYAxuTW=s96-c,
+            //  email=alswo2035@gmail.com,
+            //  email_verified=true,
+            //  locale=ko}]
+        }
+
+        // 3. 일반회원(UserDetails) + OAUTH(OAuth2User) 통합회원 = DTO 같이쓰기
+            // 2-1 권한 목록에 추가
+        List<GrantedAuthority> 권한목록 = new ArrayList<>();
+        권한목록.add( new SimpleGrantedAuthority("ROLE_" + registrationId ) );
+        
+            // 2-2 DTO 만들기
+        MemberDto memberDto = MemberDto.builder()
+                .memail( memail)
+                .mname( mname )
+                .권한목록( 권한목록 )
+                .소셜회원정보( oAuth2User.getAttributes() )
+                .build();
+
+            // 2-3 DB처리
+                // 만약에 처음 접속한 OAUTH2 회원이면 DB처리
+                // 아니면 DB처리
+
+        if( !memberEntityRepository.existsByMemail(memail) ){ // 해당 이메일이 db에 없으면
+            memberDto.setMrole( "ROLE_USER" );
+            // 임의 패스워드 [ oauth2 패스워드가 필요 없다 , db null 피하기 위해서 / 패스워드 이름으로 설정]
+            memberDto.setMpassword( new BCryptPasswordEncoder().encode( mname ) );
+
+            // [ oauth2 전화번호가 없다.- 사업자등록 해야함 / db null  피하기 위해 / 전화번호를 임의로 설정 ]
+            Random random = new Random();
+            int 앞 = random.nextInt(999);
+            int 중간 = random.nextInt(9999);
+            int 뒤 = random.nextInt(9999);
+            memberDto.setMphone( 앞 +"-"+ 중간 +"-"+ 뒤 ); // 추후에 마이페이지로 이동시켜서 추가정보 입력하도록 유도
+            memberEntityRepository.save( memberDto.toEntity() );
+        }
+        else{ // 만약 처음 접속이 아니면
+            memberDto.setMrole( memberEntityRepository.findByMemail( memail).getMrole() );
+        }
+        // 권한추가
+        memberDto.get권한목록().add( new SimpleGrantedAuthority( memberDto.getMrole() ) );
+        return memberDto;
     }
 
 
@@ -105,12 +223,24 @@ public class MemberService
             }
         // 2. 로딩[불러오기] 된 사용자의 정보를 이용해서 패스워드를 검증
             // 2-1 있는 아이디이면
-        UserDetails userDetails = User.builder()
+        /*UserDetails userDetails = User.builder()
                 .username( memberEntity.getMemail() ) // 찾은 사용자 정보의 아이디
                 .password( memberEntity.getMpassword() ) // 찾은 사용자 정보의 패스워드
-                .authorities( memberEntity.getMrole() ).build(); // 찾은 사용자 정보의 권한
+                .authorities( memberEntity.getMrole() ).build(); // 찾은 사용자 정보의 권한*/
 
-        return userDetails;
+        // 2-1 권한 목록 추가
+        List<GrantedAuthority> 권한목록 = new ArrayList<>();
+        권한목록.add( new SimpleGrantedAuthority( memberEntity.getMrole() ) );
+
+        // 2-2 DTO 만들기
+        MemberDto memberDto = MemberDto.builder()
+                .memail( memberEntity.getMemail() )
+                .mpassword( memberEntity.getMpassword() )
+                .mname( memberEntity.getMname())
+                .권한목록( 권한목록 )
+                .build();
+
+        return memberDto;
     }
 
     // Controller -> Service -> Repository

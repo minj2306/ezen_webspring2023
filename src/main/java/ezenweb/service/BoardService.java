@@ -117,4 +117,27 @@ public class BoardService {
         }
         return false;
     }
+
+    // 5 [2-2] 개별 게시글 출력
+    @Transactional
+    public BoardDto doGet( int bno ){
+
+        // PK 변호에 해당하는 엔티티 찾기
+        Optional<BoardEntity> boardEntityOptional = boardEntityRepository.findById(bno);
+
+        // 2. 검색된 엔티티가 존재하면
+        if(boardEntityOptional.isPresent()){
+
+            // 3. 엔티티 꺼내기
+            BoardEntity boardEntity = boardEntityOptional.get();
+
+            // 4. 엔티티 -> DTO 반환
+            BoardDto boardDto = boardEntity.allToDto();
+
+            return boardDto;
+        }
+
+        return null;
+    }
+
 }

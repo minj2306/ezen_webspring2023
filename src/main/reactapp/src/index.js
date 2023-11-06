@@ -20,6 +20,8 @@ import Index from './component/Index.js'
 import 상태관리컴포넌트 from './component/example/day05/1_상태관리컴포넌트.js'
 import 생명주기컴포넌트 from './component/example/day05/2_생명주기컴포넌트.js'
 
+import 라우터매개변수 from './component/example/day06/1_라우터매개변수.js'
+
 // 1. index.html 에 <div id="root"> dom 객체 호출
 const root = ReactDOM.createRoot(document.getElementById('root'));
 // 2. 리액트 렌더링 ( JSX --> HTML 변환 )
