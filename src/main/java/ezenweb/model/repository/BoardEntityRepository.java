@@ -27,9 +27,12 @@ public interface BoardEntityRepository
         // @Query( value = "SQL" 작성 , nativeQuery = true )
         // nativeQuery = true 사용하면 실제 mysql에서 사용하는 sql 표현식 사용
     // SQL 안에서 매개변수를 표현할때 :매개변수명
-    @Query( value = "select * from board " +
-            "where btitle like %:keyword%" ,
-            nativeQuery = true)
+    @Query( value = "select * from board where "
+                    +"if( :keyword = '' , true , " // 전체검색 [조건 1]
+                    +"if( :key = 'btitle' , btitle like %:keyword% , " // [ 조건2 ]
+                    +"if( :key = 'bcontent' , bcontent like %:keyword% , true ) ) ) " // [ 조건3 ]
+                    +"order by cdate desc "
+                    , nativeQuery = true)
     Page<BoardEntity> findBySearch( String key , String keyword , Pageable pageable );
 
 }

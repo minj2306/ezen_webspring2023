@@ -21,8 +21,9 @@ public class BoardDto {
     private int bview;
     private String bfile;
     private int mno;
-    private LocalDateTime cdate;
-    private LocalDateTime udate;
+    private String memail;
+    private String cdate;
+    private String udate;
 
     //dto -> entity
     // 1. entity 저장 할 때

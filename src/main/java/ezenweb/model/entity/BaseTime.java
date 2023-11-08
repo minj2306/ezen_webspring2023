@@ -8,6 +8,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 // 공통된 어노테이션 정보 [ @CreatedDate , @LastModifiedDate ] 등을 부모 클래스로 선언하고 어노테이션 정보를 자식클래스에게 제공
 @MappedSuperclass //엔티티 x [ 여러 엔티티가 공통으로 사용하는 필드에 대해 구성할때 ]
 @EntityListeners( AuditingEntityListener.class ) //
@@ -19,6 +21,17 @@ public class BaseTime {
     @LastModifiedDate // 엔티티가 변경될때 시간이 자동 저장/주입
     private LocalDateTime udate; // 레코드/엔티티 수정 날짜
 
+    // 1. 날짜 형변환 메소드 [ LocalDateTime -> String ]
+        // toTimeOrDate : 오늘 날짜이면 시간표시 하고 오늘 날짜 아니면 날짜로 표시
+    public String toTimeOrDate( LocalDateTime dateTime ){
+        // 만약에 매개변수로 들어온 날짜가 현재신간 날짜와 같으면
+        return
+        dateTime.toLocalDate().toString()
+                .equals( LocalDateTime.now().toLocalDate().toString() ) ?
+                dateTime.toLocalTime().format(DateTimeFormatter.ofPattern( "HH:mm:ss") )
+                : dateTime.toLocalDate().format( DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+    }
 }
 
 /*

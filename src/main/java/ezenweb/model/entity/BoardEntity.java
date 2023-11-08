@@ -47,8 +47,9 @@ public class BoardEntity extends BaseTime { // 테이블 설계
                         .bfile(this.bfile)
                         .bview(this.bview)
                         .mno(this.memberEntity.getMno())
-                        .cdate(this.getCdate())
-                        .udate(this.getUdate())
+                        .memail(this.memberEntity.getMemail()) //작성자 아이디 [ fk 연결된 필드 ]
+                        .cdate( toTimeOrDate( this.getCdate() ) ) // 구글링 : Java LocalDateTime 변환
+                        .udate( toTimeOrDate( this.getUdate() ) )
                         .build();
     }
 

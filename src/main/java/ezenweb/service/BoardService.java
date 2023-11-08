@@ -69,7 +69,7 @@ public class BoardService {
 
     // 2.
     @Transactional
-    public PageDto getAll( int page , String key , String keyword ){
+    public PageDto getAll( int page , String key , String keyword , int view ){
 
         // * JPA 페이징처리 라이브러리 지원
             // 1 . Pageable : 페이지 인터페이스( 구현체 : 구현[ 추상메소드(인터페이스 가지는 함수) 를 구현] 해주는 객체)
@@ -81,8 +81,8 @@ public class BoardService {
                 // list 와 다르게 추가적으로 함수 지원
                     // 1. getTotalPages()
                     // 2. getTotalElements()
-            // new 안씀 -> of 가 static이기 떄문
-        Pageable pageable = PageRequest.of( page-1 , 2 );
+            // new 안씀 -> of 가 static이기 떄문  페이지 번호 , 출력수   정렬기준                 방식  정렬기준 필드명
+        Pageable pageable = PageRequest.of( page-1 , view  /*, Sort.by(Sort.Direction.DESC , "cdate") */ );
         System.out.println("page : " + page);
         // 1. 모든 게시물 호출한다.
         //Page <BoardEntity> entities = boardEntityRepository.findAll( pageable );
@@ -106,7 +106,7 @@ public class BoardService {
                 .totalCount(totalCount)
                 .totalPage(totalPage)
                 .build();
-
+        System.out.println("pageDto"+pageDto);
         return pageDto;
     }
 
@@ -133,6 +133,7 @@ public class BoardService {
 
         return false;
     }
+
 
     // 4.
     @Transactional
@@ -163,6 +164,8 @@ public class BoardService {
             // 3. 엔티티 꺼내기
             BoardEntity boardEntity = boardEntityOptional.get();
 
+                // 조회수 증가
+                boardEntity.setBview( boardEntity.getBview()+1 );
             // 4. 엔티티 -> DTO 반환
             BoardDto boardDto = boardEntity.allToDto();
 
