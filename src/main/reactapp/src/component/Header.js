@@ -37,6 +37,9 @@ export default function Header( props ){
         axios
             .get('/member/get')
             .then( r => {
+
+                console.log("copyArray" + copyArray)
+
                 console.log(r.data);
                 if(r.data != ''){ // 만약 로그인이 되어있으면
                 // 브라우저 세션/쿠키 / 브라우저 f12 -> 에플리케이션 탭 -> LocalStorage / SessionStorage
@@ -54,6 +57,7 @@ export default function Header( props ){
     } , [] )
 
 
+
     return(<>
         <header>
             <h2><Link to='/'>이젠리액트</Link></h2>
@@ -62,6 +66,7 @@ export default function Header( props ){
                 <li><Link to='/'>TODO</Link></li>
                 <li><Link to='/'>비회원게시판</Link></li>
                 <li><Link to='/board/list'>회원게시판</Link></li>
+                <li><Link to='/admin/product'>제품 관리</Link></li>
                 {/* 삼항연산자 조건 ? 참 : 거짓*/}
                 {
                     login == null

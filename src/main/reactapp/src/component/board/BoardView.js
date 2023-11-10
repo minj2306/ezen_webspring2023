@@ -39,7 +39,11 @@ export default function BoardView( props ) {
             <h3>개별게시물 {bno}</h3>
             <div>{board.btitle}</div>
             <div>{board.bcontent}</div>
-
+            <div>
+                <a href={"/board/filedownload?uuidFile="+board.bfile}>
+                    {board.bfile}
+                </a>
+            </div>
             {/*삭제와 수정은 본인만 가능*/}
             {/*삼항연산자 조건 ? (<>참일때</>) : (<>거짓일때</>) */}
             {

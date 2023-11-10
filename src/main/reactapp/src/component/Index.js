@@ -19,6 +19,8 @@ import BoardWrite from './board/BoardWrite';
 import BoardView from './board/BoardView';
 import BoardUpdate from './board/BoardUpdate';
 
+import ProductAdmin from './product/ProductAdmin';
+
 import Info from './member/Info';
 
 import 컴포넌트1 from './example/day01/1_컴포넌트'
@@ -63,6 +65,8 @@ export default function Index( props ){
                     <Route path='/board/write' element ={ <BoardWrite/> }/>
                     <Route path='/board/view' element ={ <BoardView/> }/>
                     <Route path='/board/update' element ={ <BoardUpdate/> }/>
+                    {/*admin*/}
+                    <Route path='/admin/product' element ={ <ProductAdmin/> }/>
 
 
                 </Routes>

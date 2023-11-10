@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,10 +63,18 @@ public class BoardService {
 
         //----------------------------------------------------------
         if( boardEntity.getBno() >= 1 ){
+            // 게시물 쓰기 성공시 파일처리
+            String fileName =
+                    fileService.fileUpload( boardDto.getFile() );
+            if( fileName != null ){
+                boardEntity.setBfile( fileName );
+            }
             return true;
         }
         return false;
     }
+    @Autowired
+    FileService fileService;
 
     // 2.
     @Transactional

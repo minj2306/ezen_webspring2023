@@ -3,6 +3,7 @@ package ezenweb.controller;
 import ezenweb.model.dto.BoardDto;
 import ezenweb.model.dto.PageDto;
 import ezenweb.service.BoardService;
+import ezenweb.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,6 @@ public class BoardController {
     // 1.
     @PostMapping("")
     public boolean write( BoardDto boardDto ){
-
-
         return boardService.write( boardDto );
     }
 
@@ -54,5 +53,14 @@ public class BoardController {
     public BoardDto doGet( @RequestParam int bno ){
 
         return boardService.doGet( bno );
+    }
+
+    @Autowired
+    FileService fileService;
+
+    // 5, 첨부파일 다운로드 요청
+    @GetMapping("/filedownload")
+    public void filedownload( @RequestParam String uuidFile ){
+        fileService.fileDownload( uuidFile );
     }
 }
