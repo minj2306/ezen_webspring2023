@@ -1,0 +1,14 @@
+1. 웹 소켓 라이브러리 설치
+  implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+2. 서버 소켓과 통신하는 매핑 주소 만들기
+    @Configuration
+    1. implements WebSocketConfigurer
+    2. 오른쪽 클릭 -> 생성 -> 메서드 재정의(오버라이딩)
+    3. registerWebSocketHandlers : 서버소켓 매핑 주소와 접근제한 주소 제공
+3. 서버소켓 클래스/객체 만들기
+    @Component
+    1. extends TextWebSocketHandler 상속받기
+    2. 오른쪽 클릭 -> 생성 -> 메서드 재정의(오버라이딩)
+
+        1. afterConnectionEstablished : 클라이언트 소켓으로부터 접속했을때 이후 메소드

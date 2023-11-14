@@ -31,7 +31,7 @@ public class ProductController {
         return productService.printCategory();
     }
 
-    @PutMapping("category")
+    @PutMapping("/category")
     public boolean updateCategory( @RequestBody ProductCategoryDto productCategoryDto){
 
         return productService.updateCategory(productCategoryDto );
@@ -40,6 +40,31 @@ public class ProductController {
     @DeleteMapping("/category")
     public boolean deleteCategory( @RequestParam int pcno ){
         return productService.deleteCategory( pcno );
+    }
+
+    @PostMapping("")
+    public boolean onProductAdd( ProductDto productDto){
+
+        return productService.onProductAdd(productDto);
+    }
+
+    // 2.
+    @GetMapping("")
+    public List<ProductDto> onProductAll(){
+
+        return productService.onProductAll();
+    }
+
+    @PutMapping("")
+    public boolean onProductUpdate( @RequestBody ProductDto productDto){
+
+        return productService.onProductUpdate(productDto);
+    }
+
+
+    @DeleteMapping("")
+    public boolean onProductDelete( @RequestParam String pno ){
+        return productService.onProductDelete(pno);
     }
 
 
