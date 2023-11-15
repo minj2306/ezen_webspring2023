@@ -24,6 +24,7 @@ public class MemberController {
     @PostMapping("/post")
     public boolean postMember( @RequestBody MemberDto memberDto ){
 
+
         boolean result = memberService.postMember(memberDto);
         return result;
     }

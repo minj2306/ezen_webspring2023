@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping( "/product" )
@@ -67,5 +68,13 @@ public class ProductController {
         return productService.onProductDelete(pno);
     }
 
+    @GetMapping("/barchart")
+    public List< Map<Object , Object> > getBarChart(){
+        return productService.getBarChart();
+    }
 
+    @GetMapping("/piechart")
+    public List< Map<Object , Object> > getPieChart(){
+        return productService.getPieChart();
+    }
 }

@@ -12,3 +12,17 @@
     2. 오른쪽 클릭 -> 생성 -> 메서드 재정의(오버라이딩)
 
         1. afterConnectionEstablished : 클라이언트 소켓으로부터 접속했을때 이후 메소드
+        2. handleTransportError : 클라이언트 소켓과 세션 오류가 발생 했을때
+        3. afterConnectionClosed : 클라이언트 소켓과 연동이 끊겼을때
+        4. handleTextMessage : 클라이언트 소켓으로부터 메세지를 받았을때
+
+==============================JS( REACT ) 클라이언트 측 소켓
+
+1. 클라이언트 소켓 생성 ( * 생성과 동시에 서버 소켓과 연결 )
+    new WebSocket( ws://서버주소/소버소켓매핑주소" )
+
+2. 클라이언트 소켓 메소드 오버라이딩
+    클라이언트소켓.onopen
+    클라이언트소켓.onerror
+    클라이언트소켓.onclose
+    클라이언트소켓.onmessage

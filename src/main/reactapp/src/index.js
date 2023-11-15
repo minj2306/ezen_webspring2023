@@ -22,11 +22,17 @@ import 생명주기컴포넌트 from './component/example/day05/2_생명주기�
 
 import 라우터매개변수 from './component/example/day06/1_라우터매개변수.js'
 
+import { SnackbarProvider } from 'notistack';
+
 // 1. index.html 에 <div id="root"> dom 객체 호출
 const root = ReactDOM.createRoot(document.getElementById('root'));
 // 2. 리액트 렌더링 ( JSX --> HTML 변환 )
 //root.render( <Index /> );
-root.render( <Index /> );
+root.render(
+    <SnackbarProvider maxSnack={ 5 }>
+        <Index />
+    </SnackbarProvider>
+);
 // <React.StrictMode> : 예외처리 컴포넌트
 //root.render( <React.StrictMode> <App /> </React.StrictMode> );
 //root.render( <React.StrictMode> <컴포넌트1 /> </React.StrictMode> );

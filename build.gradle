@@ -25,6 +25,8 @@ dependencies { // 외부 라이브러리 추가하는 곳 => 자동으로 해당
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.apache.poi:poi-ooxml:5.2.2'
+    implementation 'org.apache.poi:poi:5.2.2'
 }
 
 tasks.named('test') {
